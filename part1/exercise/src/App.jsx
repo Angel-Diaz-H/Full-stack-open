@@ -1,28 +1,31 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
 const App = () => {
   const course = 'Half Stack application development'
-  const part1 = {
-    name: 'Fundamentals of React',
-    exercises: 10
-  }
-  const part2 = {
-    name: 'Using props to pass data',
-    exercises: 7
-  }
-  const part3 = {
-    name: 'State of a component',
-    exercises: 14
-  }
-  const totalExercises = part1.exercises + part2.exercises + part3.exercises
+  const parts = [
+    {
+      name: 'Fundamentals of React',
+      exercises: 10
+    },
+    {
+      name: 'Using props to pass data',
+      exercises: 7
+    },
+    {
+      name: 'State of a component',
+      exercises: 14
+    }
+  ]
 
   return (
     <div>
       <Header course = {course} />
-      <Content part1 = {part1} part2 = {part2} part3 = {part3}/>
-      <Total sum = {totalExercises}/>
-    </div>
+      <Content parts = {parts} />
+      <Total parts = {parts} />
+      </div>
   )
 }
+//First idea: <Total sum = {parts.reduce((sum, part) => sum + part.exercises, 0)} />
 
 const Header = (props) => {
   return (
@@ -35,14 +38,13 @@ const Header = (props) => {
 }
 
 const Content = (props) => {
-  return (
+  return(
     <>
-      <Part part = {props.part1.name} exercises={props.part1.exercises}/>
-      <Part part = {props.part2.name} exercises={props.part2.exercises}/>
-      <Part part = {props.part3.name} exercises={props.part3.exercises}/>
+      {props.parts.map(valor => <Part part = {valor.name} exercises = {valor.exercises}/>)}
     </>
   )
-}
+};
+//I disabled jsx-key because I am still learning it.
 
 const Part = (props) => {
   return (
@@ -53,10 +55,12 @@ const Part = (props) => {
 }
 
 const Total = (props) => {
-  return(
-    <>
-      <p>Number of exercises {props.sum}</p>
-    </>
+  const total = props.parts.reduce((sum, part) => sum + part.exercises, 0)
+  //Method: https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
+  return (
+    <p>
+      Number of exercises {total}
+    </p>
   )
 }
 
